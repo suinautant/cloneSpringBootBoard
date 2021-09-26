@@ -2,9 +2,12 @@ package com.suinautant.myhome.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.suinautant.myhome.model.Board;
 import com.suinautant.myhome.repository.BoardRepository;
+import com.suinautant.myhome.validator.BoardValidator;
 
 @Controller
 @RequestMapping("/board")
@@ -20,6 +24,9 @@ public class BoardController {
 
 	@Autowired
 	private BoardRepository boardRepository;
+	
+	@Autowired
+	private BoardValidator boardValidator;
 
 	@GetMapping("/list")
 	public String list(Model model) {
@@ -40,7 +47,11 @@ public class BoardController {
 	}
 
 	@PostMapping("/form")
-	public String formSubmit(@ModelAttribute Board board) {
+	public String formSubmit(@Valid Board board, BindingResult bindingResult) {
+		boardValidator.validate(board, bindingResult);
+		if (bindingResult.hasErrors()) {
+			return "board/form";
+		}
 		boardRepository.save(board);
 		return "redirect:/board/list";
 	}
