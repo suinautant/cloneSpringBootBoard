@@ -40,7 +40,7 @@ public class BoardController {
 	}
 
 	@PostMapping("/form")
-	public String greetingSubmit(@ModelAttribute Board board) {
+	public String formSubmit(@ModelAttribute Board board) {
 		boardRepository.save(board);
 		return "redirect:/board/list";
 	}
