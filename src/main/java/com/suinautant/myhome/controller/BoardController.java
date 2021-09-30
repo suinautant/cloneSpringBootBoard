@@ -34,8 +34,10 @@ public class BoardController {
 
 	// Pageable 설정시 req 매개변수 page와 size 사용 가능
 	@GetMapping("/list")
-	public String list(Model model, @PageableDefault(size = 2) Pageable pageable) {
-		Page<Board> boards = boardRepository.findAll(pageable);
+	public String list(Model model, @PageableDefault(size = 2) Pageable pageable, 
+			@RequestParam(required = false, defaultValue = "") String searchText) {
+//		Page<Board> boards = boardRepository.findAll(pageable);
+		Page<Board> boards = boardRepository.findByTitleContainingOrContentContaining(searchText, searchText, pageable);
 		// boards.getPageable().getPageNumber() : 현재 페이지 번호
 		// boards.getTotalPages()  : 전체 페이지 수
 		// ?? 4를 빼고 더하는 과정이 필요한가 ??
