@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.suinautant.myhome.model.User;
+
 @Controller
 @RequestMapping("/account")
 public class AccountController {
@@ -14,9 +16,9 @@ public class AccountController {
 		return "/account/login.html";
 	}
 	
-//	@PostMapping("/register")
-//	public String register() {
-//		return "/account/register.html";
-//	}
+	@PostMapping("/register")
+	public String register(User user) {
+		return "/account/register.html";
+	}
 
 }
