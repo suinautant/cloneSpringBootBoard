@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
 
-import org.hibernate.validator.constraints.UniqueElements;
 
 import lombok.Data;
 
@@ -21,6 +23,11 @@ public class User {
 	private String password;
 	private Boolean enabled;
 	
+	@ManyToMany
+	@JoinTable(
+	  name = "user_role", 
+	  joinColumns = @JoinColumn(name = "user_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private List<Role> roles;
 
 }
