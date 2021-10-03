@@ -1,5 +1,6 @@
 package com.suinautant.myhome.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -28,6 +29,7 @@ public class User {
 	  name = "user_role", 
 	  joinColumns = @JoinColumn(name = "user_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private List<Role> roles;
+
+	private List<Role> roles = new ArrayList<>();
 
 }
