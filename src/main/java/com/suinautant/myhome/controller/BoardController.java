@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.suinautant.myhome.model.Board;
 import com.suinautant.myhome.repository.BoardRepository;
+import com.suinautant.myhome.service.BoardService;
 import com.suinautant.myhome.validator.BoardValidator;
 
 @Controller
@@ -30,13 +32,16 @@ public class BoardController {
 	private BoardRepository boardRepository;
 
 	@Autowired
+	private BoardService boardService;
+
+	@Autowired
 	private BoardValidator boardValidator;
 
 	// Pageable 설정시 req 매개변수 page와 size 사용 가능
 	@GetMapping("/list")
-	public String list(Model model, @PageableDefault(size = 2) Pageable pageable, 
+	public String list(Model model, @PageableDefault(size = 2) Pageable pageable,
 			@RequestParam(required = false, defaultValue = "") String searchText) {
-//		Page<Board> boards = boardRepository.findAll(pageable);
+		//		Page<Board> boards = boardRepository.findAll(pageable);
 		Page<Board> boards = boardRepository.findByTitleContainingOrContentContaining(searchText, searchText, pageable);
 		// boards.getPageable().getPageNumber() : 현재 페이지 번호
 		// boards.getTotalPages()  : 전체 페이지 수
@@ -62,12 +67,13 @@ public class BoardController {
 	}
 
 	@PostMapping("/form")
-	public String formSubmit(@Valid Board board, BindingResult bindingResult) {
+	public String formForm(@Valid Board board, BindingResult bindingResult, Authentication authentication) {
 		boardValidator.validate(board, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "board/form";
 		}
-		boardRepository.save(board);
+		String username = authentication.getName();
+		boardService.save(username, board);
 		return "redirect:/board/list";
 	}
 }

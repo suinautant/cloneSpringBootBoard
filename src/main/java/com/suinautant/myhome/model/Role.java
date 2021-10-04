@@ -10,6 +10,8 @@ import javax.persistence.ManyToMany;
 
 import org.hibernate.validator.constraints.UniqueElements;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
@@ -21,6 +23,7 @@ public class Role {
 	private String name;
 	
 	@ManyToMany(mappedBy = "roles")
+	@JsonIgnore
 	private List<User> users;
 
 }
