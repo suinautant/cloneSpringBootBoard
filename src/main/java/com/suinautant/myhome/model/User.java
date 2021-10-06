@@ -37,6 +37,7 @@ public class User {
 	private List<Role> roles = new ArrayList<>();
 	
 	// cascade : User 객체로 CRUD시 Board 객체도 함께 CRUD 할 때 사용
+	// orphanRemoval : 부모가 없는 객체는 삭제 (true)
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Board> boards = new ArrayList<>();
 
