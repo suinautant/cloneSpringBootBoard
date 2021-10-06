@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.suinautant.myhome.model.Board;
 import com.suinautant.myhome.model.User;
 import com.suinautant.myhome.repository.UserRepository;
 
@@ -44,11 +45,15 @@ class UserApiController {
 	@PutMapping("/users/{id}")
 	User replaceUser(@RequestBody User newUser, @PathVariable Long id) {
 
+		return repository.findById(id).map(user -> {
+//			user.setTitle(newUser.getTitle());
+//			user.setContent(newUser.getContent());
+			user.setBoards(newUser.getBoards());
+			for(Board board:user.getBoards()) {
+				board.setUser(user);
+			}
 
-		return repository.findById(id).map(User -> {
-//			User.setTitle(newUser.getTitle());
-//			User.setContent(newUser.getContent());
-			return repository.save(User);
+			return repository.save(user);
 		}).orElseGet(() -> {
 			newUser.setId(id);
 			return repository.save(newUser);
