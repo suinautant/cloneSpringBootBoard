@@ -45,6 +45,8 @@ public class User {
 	// LAZY : OneToMany, ManyToMany : board를 사용할 때만 호출
 	// EAGER : OneToOne, ManyToOne : board를 사용하지 않아도 호출
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	// findByUsernameQuery 테스트용
+	@JsonIgnore
 	private List<Board> boards = new ArrayList<>();
 
 }
