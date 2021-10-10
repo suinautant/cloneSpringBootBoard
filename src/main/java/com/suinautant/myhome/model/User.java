@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,6 +30,7 @@ public class User {
 	private String password;
 	private Boolean enabled;
 	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
 	  name = "user_role", 
@@ -38,7 +40,11 @@ public class User {
 	
 	// cascade : User 객체로 CRUD시 Board 객체도 함께 CRUD 할 때 사용
 	// orphanRemoval : 부모가 없는 객체는 삭제 (true)
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	//	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	// fetch 기본값 LAZY
+	// LAZY : OneToMany, ManyToMany : board를 사용할 때만 호출
+	// EAGER : OneToOne, ManyToOne : board를 사용하지 않아도 호출
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Board> boards = new ArrayList<>();
 
 }

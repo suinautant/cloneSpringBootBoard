@@ -16,8 +16,11 @@ import com.suinautant.myhome.model.Board;
 import com.suinautant.myhome.model.User;
 import com.suinautant.myhome.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/api")
+@Slf4j
 class UserApiController {
 
 	@Autowired
@@ -38,7 +41,6 @@ class UserApiController {
 
 	@GetMapping("/users/{id}")
 	User one(@PathVariable Long id) {
-
 		return repository.findById(id).orElse(null);
 	}
 
